@@ -7,6 +7,7 @@ import GlobalStyles from './theme/globalStyles';
 // components
 import { useSelector } from 'react-redux';
 import LineLoader from './components/LineLoader'
+import { BrowserRouter } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 function App() {
@@ -22,7 +23,9 @@ function App() {
     <ThemeConfig>
       <GlobalStyles />
       <Suspense fallback={<LineLoader />}>
-        <Router isLoggedIn={isLoggedIn()} role={profile?.role} />
+        <BrowserRouter>
+          <Router isLoggedIn={isLoggedIn()} role={profile?.role} />
+        </BrowserRouter>
       </Suspense>
     </ThemeConfig>
   );

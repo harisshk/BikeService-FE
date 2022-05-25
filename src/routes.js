@@ -2,6 +2,8 @@ import React from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
+import LogoOnlyLayout from './layouts/LogoOnlyLayout';
+
 //
 import Login from './screens/auth/login';
 // ----------------------------------------------------------------------
@@ -54,17 +56,17 @@ export default function Router({ isLoggedIn }) {
 
     //   ]
     },
-    // {
-    //   path: '/',
-    //   element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
-    //   children: [
-    //     { path: '/', element: <Navigate to="/dashboard" /> },
-    //     { path: 'login', element: <Login /> },
-    //     { path: 'register', element: <Register /> },
-    //     { path: '404', element: <NotFound /> },
-    //     { path: '*', element: <Navigate to="/404" /> }
-    //   ]
-    // },
+    {
+      path: '/',
+      element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
+      children: [
+        { path: '/', element: <Navigate to="/login" /> },
+        { path: 'login', element: <Login /> },
+        // { path: 'register', element: <Register /> },
+        // { path: '404', element: <NotFound /> },
+        // { path: '*', element: <Navigate to="/404" /> }
+      ]
+    },
     { path: '*', element: <Navigate to="/404" replace /> }
   ]);
 }

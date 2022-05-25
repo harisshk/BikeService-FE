@@ -170,6 +170,7 @@ export default function NavSection({ navConfig, profile, ...other }) {
               <NavItem key={item.title} item={item} active={match} />
             )
           }
+          return null
         })}
       </List>
     </Box>
