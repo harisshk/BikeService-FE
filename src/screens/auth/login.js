@@ -42,7 +42,7 @@ export default function Login() {
     <RootStyle title="Login ">
       <AuthLayout>
         Don’t have an account? &nbsp;
-        <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
+        <Link underline="none" variant="subtitle2" component={RouterLink} to="/signup">
           Register here.
         </Link>
       </AuthLayout>
@@ -75,7 +75,7 @@ export default function Login() {
             }}
           >
             Don’t have an account?&nbsp;
-            <Link variant="subtitle2" component={RouterLink} to="/register" underline="hover">
+            <Link variant="subtitle2" component={RouterLink} to="/signup" underline="hover">
               Register here.
             </Link>
           </Typography>
