@@ -2,8 +2,12 @@ import React from 'react';
 import { Navigate, useRoutes, useLocation } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
-//
+import LogoOnlyLayout from './layouts/LogoOnlyLayout';
+
+// Screens
 import Login from './screens/auth/login';
+import Signup from './screens/auth/signup';
+import Dashboard from './screens/Dashboard';
 // ----------------------------------------------------------------------
 
 export default function Router({ isLoggedIn }) {
@@ -11,8 +15,8 @@ export default function Router({ isLoggedIn }) {
   const getBrandText = () => {
     const brandText = location.pathname;
     switch (brandText) {
-      case '/dashboard':
-        return 'Dashboard'
+      case '/home':
+        return 'Home'
       case '/applications':
         return 'Applications'
       case '/users/add':
@@ -33,13 +37,12 @@ export default function Router({ isLoggedIn }) {
     {
       path: '/',
       element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
-    //   children: [
-    //     { path: '', element:  <Navigate to="/dashboard" />  },
-    //     { path: 'dashboard', element: <Dashboard />  },
-    //     { path: 'products', element: <Products /> },
-    //     { path: 'applications', element: <ApplicationList /> },
-
-    //   ]
+      children: [
+        { path: '', element:  <Navigate to="/home" />  },
+        { path: 'home', element: <Dashboard />  },
+        // { path: 'products', element: <Products /> },
+        // { path: 'applications', element: <ApplicationList /> },
+      ]
     },
     {
       path: '/users',
@@ -54,17 +57,17 @@ export default function Router({ isLoggedIn }) {
 
     //   ]
     },
-    // {
-    //   path: '/',
-    //   element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
-    //   children: [
-    //     { path: '/', element: <Navigate to="/dashboard" /> },
-    //     { path: 'login', element: <Login /> },
-    //     { path: 'register', element: <Register /> },
-    //     { path: '404', element: <NotFound /> },
-    //     { path: '*', element: <Navigate to="/404" /> }
-    //   ]
-    // },
+    {
+      path: '/',
+      element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
+      children: [
+        { path: '/', element: <Navigate to="/login" /> },
+        { path: 'login', element: <Login /> },
+        { path: 'signup', element: <Signup /> },
+        // { path: '404', element: <NotFound /> },
+        // { path: '*', element: <Navigate to="/404" /> }
+      ]
+    },
     { path: '*', element: <Navigate to="/404" replace /> }
   ]);
 }
