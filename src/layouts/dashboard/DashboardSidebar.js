@@ -43,7 +43,7 @@ DashboardSidebar.propTypes = {
 
 export function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
-  const profile = useSelector (state =>state.profile)
+  const profile = useSelector(state => state.profile)
   const isDesktop = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         {/* <Logo /> */}
-        <h2>Duroos</h2>
+        <h2>Bike Service</h2>
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>

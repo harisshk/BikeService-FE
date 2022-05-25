@@ -47,7 +47,7 @@ export function LoginForm() {
       const loginResponse = await login(email, password)
       if (loginResponse.success) {
         dispatch(setProfile(loginResponse));
-        navigate('/dashboard', { replace: true });
+        navigate('/home', { replace: true });
       }
       else {
         if (loginResponse.message === "Mismatch email / password") {

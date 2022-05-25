@@ -1,17 +1,16 @@
 const prod = {
     url: {
-        BASE_URL: 'https://duroos.herokuapp.com'
+        BASE_URL: ''
     }
 }
 const dev = {
     url: {
-       BASE_URL: 'https://duroos.herokuapp.com'
-    //    BASE_URL: 'http://localhost:5050'
+        BASE_URL: 'http://localhost:5050'
     }
 }
 const config = process.env.NODE_ENV === 'development' ? dev : prod;
 
 module.exports = {
-    userServiceUrl: `${config?.url?.BASE_URL}/user`,
+    userServiceUrl: `${config?.url?.BASE_URL}/auth`,
     applicationServiceUrl: `${config?.url?.BASE_URL}/application`,
 }
