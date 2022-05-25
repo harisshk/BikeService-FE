@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react';
+// routes
+import Router from './routes';
+// theme
+import ThemeConfig from './theme';
+import GlobalStyles from './theme/globalStyles';
+// components
+import { useSelector } from 'react-redux';
+import LineLoader from './components/LineLoader'
+// ----------------------------------------------------------------------
 
 function App() {
+  const profile = useSelector(state => state?.profile)
+  const isLoggedIn = () => {
+    if (profile?.token) {
+      return true
+    } else {
+      return false
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeConfig>
+      <GlobalStyles />
+      <Suspense fallback={<LineLoader />}>
+        <Router isLoggedIn={isLoggedIn()} role={profile?.role} />
+      </Suspense>
+    </ThemeConfig>
   );
 }
 
