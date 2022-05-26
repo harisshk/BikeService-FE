@@ -10,6 +10,7 @@ import Signup from './screens/auth/signup';
 import BikeList from './screens/bikes/bikeList';
 import AddBike from './screens/bikes/newBikeForm';
 import Dashboard from './screens/dashboard';
+import CreateService from './screens/serviceApplications/serviceForm';
 import ServiceList from './screens/serviceApplications/serviceList';
 // ----------------------------------------------------------------------
 
@@ -20,20 +21,16 @@ export default function Router({ isLoggedIn }) {
     switch (brandText) {
       case '/home':
         return 'Home'
-      case '/applications':
-        return 'Applications'
-      case '/users/add':
-        return 'Add User'
-      case '/users/admin':
-        return 'Admin'
-      case '/users/evaluator':
-        return 'Evaluators'
-      case '/users/screener':
-        return 'Screeners'
-      case '/users/student':
-        return 'Students'
+      case '/bike/all':
+        return 'Bikes'
+      case '/bike/add':
+        return 'Add Bike'
+      case '/services/all':
+        return 'Services'
+      case '/services/new':
+        return 'Book Service'
       default:
-        break;
+        return '';
     }
   };
   return useRoutes([
@@ -60,7 +57,7 @@ export default function Router({ isLoggedIn }) {
       element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
       children: [
         { path: 'all', element: <ServiceList /> },
-        // { path: 'add', element: <AddBike /> },
+        { path: 'new', element: <CreateService /> },
       ]
     },
     {
