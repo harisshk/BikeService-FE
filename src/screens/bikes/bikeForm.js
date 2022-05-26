@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as Validation from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { AlertSnackbar } from '../../components/Snackbar';
 import {
     Box,
@@ -12,18 +12,18 @@ import {
     TextField,
 } from '@mui/material';
 // Service imports
-import { createBike } from "../../services/bikeService";
+import { createBike, getBikeById, editBikeData } from "../../services/bikeService";
 import { useSelector } from "react-redux";
-export const AddBike = (props) => {
+export const BikeForm = (props) => {
     const profileData = useSelector(data => data?.profile)
-
+    const bikeId = useParams()
+    const [isEdit, setIsEdit] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false)
     const [snackbarInfo, setSnackbarInfo] = useState({
         message: "",
         variant: ""
     })
     const navigate = useNavigate();
-
     const style = { width: "100%", margin: "10px 10px", }
     const BikeSchema = Validation.object().shape({
         bikeMake: Validation.string()
@@ -49,19 +49,26 @@ export const AddBike = (props) => {
             bikeModel: '',
             engineNumber: '',
             registrationNumber: '',
-
         },
         validationSchema: BikeSchema,
         onSubmit: async (data) => {
             const { bikeMake, bikeModel, engineNumber, registrationNumber } = data
-            const registerResponse = await createBike({
+            const registerResponse = isEdit?
+            await editBikeData(bikeId?.id,{
                 bikeMake,
                 bikeModel,
                 engineNumber,
                 registrationNumber: registrationNumber.toUpperCase(),
                 owner: profileData?.id
             })
-            console.log(registerResponse, '----')
+            :
+            await createBike({
+                bikeMake,
+                bikeModel,
+                engineNumber,
+                registrationNumber: registrationNumber.toUpperCase(),
+                owner: profileData?.id
+            })
             if (registerResponse.success) {
                 if (registerResponse.duplicate) {
                     setSnackbarInfo({
@@ -71,7 +78,7 @@ export const AddBike = (props) => {
                     setSnackbarOpen(true);
                 } else {
                     setSnackbarInfo({
-                        message: "Bike added successfully",
+                        message: `Bike ${isEdit?'updated':'added'} successfully`,
                         variant: "success",
                     });
                     setSnackbarOpen(true);
@@ -81,15 +88,30 @@ export const AddBike = (props) => {
                 }
             } else {
                 setSnackbarInfo({
-                    message: "Bike cannot be added",
+                    message: `Bike cannot be ${isEdit?'updated':'added'}`,
                     variant: "error",
                 });
                 setSnackbarOpen(true);
             }
         }
     });
-    const { errors, touched, handleSubmit, getFieldProps } = formik;
-
+    const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
+    const getBikeData = async (bikeId) => {
+        const response = await getBikeById(bikeId)
+        if (response?.success) {
+            const { bikeMake, bikeModel, registrationNumber, engineNumber } = response.data
+            setFieldValue('bikeMake', bikeMake)
+            setFieldValue('bikeModel', bikeModel)
+            setFieldValue('registrationNumber', registrationNumber)
+            setFieldValue('engineNumber', engineNumber)
+        }
+    }
+    useEffect(() => {
+        if (bikeId?.id !== '') {
+            setIsEdit(true)
+            getBikeData(bikeId?.id)
+        }
+    }, [])
     return (
         <div>
             <FormikProvider value={formik}>
@@ -103,6 +125,7 @@ export const AddBike = (props) => {
                                 fullWidth
                                 type="text"
                                 label="Bike Make"
+                                value={values.bikeMake}
                                 placeholder="Eg: TVS, Bajaj"
                                 {...getFieldProps('bikeMake')}
                                 error={Boolean(touched.bikeMake && errors.bikeMake)}
@@ -145,7 +168,7 @@ export const AddBike = (props) => {
                                     Reset
                                 </Button> &nbsp;
                                 <Button type="submit" variant="contained" >
-                                    Create
+                                    {!isEdit ? 'Create' : 'Update'}
                                 </Button>
                             </Box>
                         </Grid>
@@ -165,4 +188,4 @@ export const AddBike = (props) => {
     )
 }
 
-export default AddBike
+export default BikeForm

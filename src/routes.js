@@ -8,7 +8,7 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import Login from './screens/auth/login';
 import Signup from './screens/auth/signup';
 import BikeList from './screens/bikes/bikeList';
-import AddBike from './screens/bikes/newBikeForm';
+import BikeForm from './screens/bikes/bikeForm';
 import Dashboard from './screens/dashboard';
 import CreateService from './screens/serviceApplications/serviceForm';
 import ServiceList from './screens/serviceApplications/serviceList';
@@ -25,6 +25,8 @@ export default function Router({ isLoggedIn }) {
         return 'Bikes'
       case '/bike/add':
         return 'Add Bike'
+      case '/edit/:id':
+        return 'Edit Bike'
       case '/services/all':
         return 'Services'
       case '/services/new':
@@ -49,7 +51,8 @@ export default function Router({ isLoggedIn }) {
       element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
       children: [
         { path: 'all', element: <BikeList /> },
-        { path: 'add', element: <AddBike /> },
+        { path: 'add', element: <BikeForm /> },
+        { path: 'edit/:id', element: <BikeForm /> },
       ]
     },
     {

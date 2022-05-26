@@ -13,21 +13,6 @@ const sidebarConfig = [
     icon: getIcon('eva:pie-chart-2-fill')
   },
   {
-    title: 'Bikes',
-    role: 'CUSTOMER',
-    icon: <TwoWheelerIcon />,
-    children: [
-      {
-        title: 'My Bikes',
-        path: '/bike/all',
-      },
-      {
-        title: 'Add New',
-        path: '/bike/add',
-      },
-    ],
-  },
-  {
     title: 'Services',
     role: 'CUSTOMER',
     icon: <MiscellaneousServicesIcon />,
@@ -39,6 +24,21 @@ const sidebarConfig = [
       {
         title: 'Book a Service',
         path: '/services/new',
+      },
+    ],
+  },
+  {
+    title: 'Bikes',
+    role: 'CUSTOMER',
+    icon: <TwoWheelerIcon />,
+    children: [
+      {
+        title: 'My Bikes',
+        path: '/bike/all',
+      },
+      {
+        title: 'Add New',
+        path: '/bike/add',
       },
     ],
   },

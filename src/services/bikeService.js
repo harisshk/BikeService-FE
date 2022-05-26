@@ -15,6 +15,33 @@ export const getUserBikes = async (userId) => {
         return { success: false, message: error?.response?.data?.message };
     }
 };
+export const getBikeById = async (bikeId) => {
+    try {
+        const response = await axios.get(`${bikeServiceUrl}/${bikeId}`)
+        if (response.data.success) {
+            return {
+                ...response?.data
+            }
+        }
+    } catch (error) {
+        console.log("err", error)
+        return { success: false, message: error?.response?.data?.message };
+    }
+};
+
+export const editBikeData = async (bikeId, payload) => {
+    try {
+        const response = await axios.put(`${bikeServiceUrl}/edit/${bikeId}`, payload)
+        if (response.data.success) {
+            return {
+                ...response?.data
+            }
+        }
+    } catch (error) {
+        console.log("err", error)
+        return { success: false, message: error?.response?.data?.message };
+    }
+};
 
 export const createBike = async (payload) => {
     try {

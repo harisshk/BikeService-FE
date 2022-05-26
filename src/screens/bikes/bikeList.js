@@ -6,9 +6,11 @@ import Loader from '../../components/Loader'
 import { useSelector } from "react-redux";
 import { getUserBikes } from "../../services/bikeService";
 import dateFormat from "dateformat";
+import { useNavigate } from "react-router-dom";
 
 const BikeList = () => {
     const profileData = useSelector(data=>data?.profile)
+    const navigate = useNavigate()
     const [bikes, setBikes] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -51,7 +53,7 @@ const BikeList = () => {
     }, [])
     return (
         <>
-            <Table data={bikes} columns={columns} />
+            <Table data={bikes} columns={columns} editable deleteAction onEdit={(data)=>{navigate(`/bike/edit/${data?._id}`)}} />
             <AlertSnackbar
                 open={snackbarOpen}
                 message={snackbarInfo.message}

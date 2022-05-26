@@ -9,7 +9,7 @@ import './index.css'
 import { AlertSnackbar } from "../Snackbar";
 
 export const Table = (props) => {
-    const { data, columns, deleteAction, editable, onEdit, isFilter, onFilterClear, onFilter, profileView, isExport, onExport } = props
+    const { data, columns, deleteAction, editable, onEdit} = props
     const [globalFilter, setGlobalFilter] = useState("")
     const [snackbarInfo, setSnackbarInfo] = useState({});
     const [snackbarOpen, setSnackbarOpen] = useState(false);

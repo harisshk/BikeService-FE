@@ -11,6 +11,7 @@ import {
     FormControl,
     TextField,
     Typography,
+    InputLabel
 } from '@mui/material';
 // Service imports
 import { getUserBikes } from "../../services/bikeService";
@@ -40,7 +41,7 @@ export const CreateService = (props) => {
         initialValues: {
             bike: '',
             features: [],
-            bookingDate: '',
+            bookingDate: new Date(),
             estimatedAmount: 0
 
         },
@@ -77,38 +78,6 @@ export const CreateService = (props) => {
                 });
                 setSnackbarOpen(true);
             }
-            // const registerResponse = await createBike({
-            //     bikeMake,
-            //     bikeModel,
-            //     engineNumber,
-            //     registrationNumber: registrationNumber.toUpperCase(),
-            //     owner: profileData?.id
-            // })
-            // console.log(registerResponse, '----')
-            // if (registerResponse.success) {
-            //     if (registerResponse.duplicate) {
-            //         setSnackbarInfo({
-            //             message: "Bike with registration already exists",
-            //             variant: "warning",
-            //         });
-            //         setSnackbarOpen(true);
-            //     } else {
-            //         setSnackbarInfo({
-            //             message: "Bike added successfully",
-            //             variant: "success",
-            //         });
-            //         setSnackbarOpen(true);
-            //         setTimeout(() => {
-            //             navigate('/bike/all');
-            //         }, 2000);
-            //     }
-            // } else {
-            //     setSnackbarInfo({
-            //         message: "Bike cannot be added",
-            //         variant: "error",
-            //     });
-            //     setSnackbarOpen(true);
-            // }
         }
     });
     const { errors, touched, handleSubmit, getFieldProps, setFieldValue, values } = formik;
@@ -127,7 +96,7 @@ export const CreateService = (props) => {
     }, [])
     return (
         <div>
-            { bikes.length !==0 ?<FormikProvider value={formik}>
+            {bikes.length !== 0 ? <FormikProvider value={formik}>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                     <Grid container >
                         <Grid xs={1} md={2} lg={3}>
@@ -150,6 +119,8 @@ export const CreateService = (props) => {
                                 </TextField>
                             </FormControl>
                             <FormControl style={style} fullWidth>
+                                <InputLabel id="test-select-label">Service</InputLabel>
+
                                 <CustomSelect placeHolder={'Service'} options={features} setField={setFieldValue}
                                 />
                             </FormControl>
@@ -185,12 +156,12 @@ export const CreateService = (props) => {
 
                 </Form>
             </FormikProvider>
-            :
-            <Box>
-                <Typography variant="h5">
-                    Add Bike to book a service
-                </Typography>
-            </Box>}
+                :
+                <Box>
+                    <Typography variant="h5">
+                        Add Bike to book a service
+                    </Typography>
+                </Box>}
             <AlertSnackbar
                 open={snackbarOpen}
                 message={snackbarInfo.message}

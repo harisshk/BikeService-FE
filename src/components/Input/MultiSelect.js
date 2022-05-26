@@ -1,8 +1,8 @@
-import { FieldProps } from "formik";
-import React from "react";
+import React, { useState } from "react";
+
+//MUI imports
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
-
 import OutlinedInput from '@mui/material/OutlinedInput';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,7 +25,7 @@ export const CustomSelect = ({
     const onChange = (e) => {
         const value = e?.target?.value
         var arrIds = []
-        var amount =[]
+        var amount = []
         options.map((item) => {
             value.map((item1) => {
                 if (item1 === item?.name) {
@@ -42,12 +42,11 @@ export const CustomSelect = ({
         setSelected([...value])
     };
 
-    const [selected, setSelected] = React.useState([]);
-    const [selectedValues, setSelectedValues] = React.useState([]);
+    const [selected, setSelected] = useState([]);
 
     return (
-        <Select
 
+        <Select
             multiple
             label="Service"
             value={selected}
