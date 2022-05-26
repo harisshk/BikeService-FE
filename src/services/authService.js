@@ -1,5 +1,5 @@
 import axios from "axios";
-import { userServiceUrl } from '../constants/url'
+import { authServiceUrl } from '../constants/url'
 
 axios.interceptors.request.use(
     (config) => {
@@ -14,7 +14,7 @@ axios.interceptors.request.use(
 export const login = async (email, password) => {
     try {
         const loginResponse = await axios.post(
-            `${userServiceUrl}/login`,
+            `${authServiceUrl}/login`,
             {
                 email: email,
                 password: password,
@@ -46,7 +46,7 @@ export const login = async (email, password) => {
 export const register = async (registerData) => {
     try {
         const registerResponse = await axios.post(
-            `${userServiceUrl}/register`,
+            `${authServiceUrl}/register`,
             registerData
         );
         if (!registerResponse.data.error) {

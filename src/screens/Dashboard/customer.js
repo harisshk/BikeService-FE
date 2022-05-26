@@ -1,56 +1,61 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 // material
 import { Grid, Container } from '@mui/material';
+import BuildIcon from '@mui/icons-material/Build';
+import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
 // components
 import PageContainer from '../../components/Page';
-
-// import StudentsCard from '../../components/cards/StudentsCard'
-// import NewApplications from '../../components/cards/NewApplications';
-// import AdminCard from '../../components/cards/AdminCard';
-// import EvaluatorCard from '../../components/cards/EvaluatorCard';
-// import ScreenerCard from '../../components/cards/ScreenerCard';
+import DashboardCard from '../../components/Card';
 
 //services
-// import { getAdminDashboardInfo } from '../../services/dashboardService';
+import { getDashboardCustomer } from '../../services/userService';
 // ----------------------------------------------------------------------
 
 export function CustomerDashboard() {
     const [countData, setCountData] = useState({
-        adminCount: 0,
-        studentCount: 0,
-        screenerCount: 0,
-        evaluatorCount: 0,
-        pendingApplicationCount: 0
+        bikeCount: 0,
+        pendingService: 0,
+        completedService: 0,
     })
-    // const fetchDashboardInfo = async () => {
-    //     const response = await getAdminDashboardInfo()
-    //     const { error, counts } = response
-    //     if (error === false) {
-    //         setCountData({ ...counts })
-    //     }
-    // }
-    
+    const profileData = useSelector(data => data?.profile)
+
+    const fetchDashboardInfo = async () => {
+        const response = await getDashboardCustomer(profileData?.id)
+        console.log(response)
+        const { success, data } = response
+        if (success) {
+            setCountData({
+                bikeCount: data?.bikeData,
+                serviceData: data?.serviceData
+            })
+        }
+    }
+
+    useEffect(() => {
+        fetchDashboardInfo()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     return (
         <PageContainer title="Dashboard">
             <Container maxWidth="xl">
-                JK
-                {/* <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <NewApplications title={"New Applications"} count={12} />
+                <Grid container spacing={3}>
+                    {countData?.serviceData && countData?.serviceData?.map((item) => {
+                        return (
+                            <Grid key={item?.status} item xs={12} sm={6} md={4}>
+                                <DashboardCard title={`${item?.status} SERVICE`} color={''} count={item?.qty} >
+                                    <BuildIcon />
+                                </DashboardCard>
+                            </Grid>
+                        )
+                    })}
+                    <Grid item xs={12} sm={6} md={4}>
+                        <DashboardCard title={"BIKES"} color={''} count={countData?.bikeCount} >
+                            <TwoWheelerIcon />
+                        </DashboardCard>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <AdminCard role={'Admin'} count={12} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <EvaluatorCard role={'Evaluators'} count={12} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <ScreenerCard role={'Screeners'} count={12} />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
-                        <StudentsCard role={'Students'} count={4} />
-                    </Grid>
-                </Grid> */}
+                </Grid>
             </Container>
         </PageContainer>
     );

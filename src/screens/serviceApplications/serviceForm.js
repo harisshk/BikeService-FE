@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Validation from 'yup';
-import { useFormik, Form, FormikProvider, Field } from 'formik';
+import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { AlertSnackbar } from '../../components/Snackbar';
 import {
@@ -21,7 +20,6 @@ import CustomSelect from "../../components/Input/MultiSelect";
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { parse } from 'date-fns'
 import { bookService } from "../../services/servicesService";
 
 export const CreateService = (props) => {
@@ -93,6 +91,7 @@ export const CreateService = (props) => {
     }
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
         <div>

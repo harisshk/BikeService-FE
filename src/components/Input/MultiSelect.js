@@ -26,17 +26,15 @@ export const CustomSelect = ({
         const value = e?.target?.value
         var arrIds = []
         var amount = []
-        options.map((item) => {
-            value.map((item1) => {
+        options.forEach(item => {
+            value.forEach(item1 => {
                 if (item1 === item?.name) {
                     arrIds.push(item?._id)
-                    console.log(item)
                     amount.push(item?.estimatedAmount)
                 }
             })
         })
         const sum = amount.reduce((value, item) => value + item, 0);
-        console.log(sum)
         setField('features', arrIds || [])
         setField('estimatedAmount', sum || 0)
         setSelected([...value])
