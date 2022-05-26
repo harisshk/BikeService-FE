@@ -51,7 +51,7 @@ export function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       onCloseSidebar();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   const renderContent = (
     <Scrollbar

@@ -22,8 +22,7 @@ export const Table = (props) => {
     const customAction = (e) => {
         return (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-around" }} onClick={() => {
-                setUser(e)
-                setDialog(true)
+                
             }} >
                 {localStorage.getItem("role") === "admin" && <Button label='Reset Password' />}
                 {editable && <Tooltip title="Edit">

@@ -6,7 +6,9 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import { store, persistor } from '../src/redux/store.js'
-
+import '../node_modules/primereact/resources/themes/saga-green/theme.css';
+import '../node_modules/primereact/resources/primereact.min.css';
+import '../node_modules/primeicons/primeicons.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

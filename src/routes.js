@@ -7,7 +7,10 @@ import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 // Screens
 import Login from './screens/auth/login';
 import Signup from './screens/auth/signup';
-import Dashboard from './screens/Dashboard';
+import BikeList from './screens/bikes/bikeList';
+import AddBike from './screens/bikes/newBikeForm';
+import Dashboard from './screens/dashboard';
+import ServiceList from './screens/serviceApplications/serviceList';
 // ----------------------------------------------------------------------
 
 export default function Router({ isLoggedIn }) {
@@ -45,21 +48,24 @@ export default function Router({ isLoggedIn }) {
       ]
     },
     {
-      path: '/users',
+      path: '/bike',
       element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
-    //   children: [
-    //     { path: '', element:<Navigate to="/" /> },
-    //     { path: 'add', element: <AddUser /> },
-    //     { path: 'admin', element: <UserList /> },
-    //     { path: 'screener', element: <UserList /> },
-    //     { path: 'evaluator', element: <UserList /> },
-    //     { path: 'student', element: <UserList /> },
-
-    //   ]
+      children: [
+        { path: 'all', element: <BikeList /> },
+        { path: 'add', element: <AddBike /> },
+      ]
+    },
+    {
+      path: '/services',
+      element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
+      children: [
+        { path: 'all', element: <ServiceList /> },
+        // { path: 'add', element: <AddBike /> },
+      ]
     },
     {
       path: '/',
-      element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/dashboard" />,
+      element: !isLoggedIn ? <LogoOnlyLayout /> : <Navigate to="/home" />,
       children: [
         { path: '/', element: <Navigate to="/login" /> },
         { path: 'login', element: <Login /> },

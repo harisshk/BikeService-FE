@@ -8,10 +8,9 @@ import { Box } from '@mui/material';
 
 const PageContainer = forwardRef(({ children, title = '', ...other }, ref) => (
   <Box ref={ref} {...other}>
-    {console.log(children)}
-    <head>
+    <div>
       <title>{title}</title>
-    </head>
+    </div>
     {children}
   </Box>
 ));

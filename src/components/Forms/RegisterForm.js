@@ -28,7 +28,7 @@ export default function RegisterForm() {
   const style = { width: "100%", margin: "10px 10px", }
 
   const genders = ["Male", "Female", "Other"]
-  
+
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarInfo, setSnackbarInfo] = useState({
     message: "",
@@ -81,7 +81,7 @@ export default function RegisterForm() {
       phoneNumber,
       password,
       role: "CUSTOMER",
-   
+
     })
     if (!registerResponse.error) {
       if (registerResponse.duplicate) {
@@ -147,7 +147,7 @@ export default function RegisterForm() {
                   </TextField>
                 </FormControl>
               </Grid>
-             
+
               <Grid style={{ padding: "0 10px" }} xs={12} sm={12} lg={6} xl={6}>
                 <TextField
                   style={style}
@@ -195,7 +195,7 @@ export default function RegisterForm() {
               </Grid>
             </Grid>
           </div>
-          
+
           <Box sx={{ px: 2, mt: 1 }} style={{ display: "flex", alignItems: "center" }}>
             <Checkbox checked={uploadData.isTermsAccepted} onClick={(e) => setUploadData({
               ...uploadData,
@@ -208,9 +208,10 @@ export default function RegisterForm() {
             <Button type="reset" color="error" >
               Reset
             </Button> &nbsp;
-            <Button type="submit" variant="contained" >
+            <LoadingButton loading={isSubmitting}
+              type="submit" variant="contained" >
               Register
-            </Button>
+            </LoadingButton >
           </div>
           <Typography
             variant="body2"

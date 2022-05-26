@@ -29,9 +29,7 @@ export function CustomerDashboard() {
     //         setCountData({ ...counts })
     //     }
     // }
-    useEffect(() => {
-        //fetchDashboardInfo()
-    }, [])
+    
     return (
         <PageContainer title="Dashboard">
             <Container maxWidth="xl">

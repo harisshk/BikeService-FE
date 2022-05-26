@@ -7,9 +7,9 @@ import { useSelector } from "react-redux";
 import { getUserBikes } from "../../services/bikeService";
 import dateFormat from "dateformat";
 
-const ServiceList = () => {
+const BikeList = () => {
     const profileData = useSelector(data=>data?.profile)
-    const [services, setServices] = useState([])
+    const [bikes, setBikes] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarInfo, setSnackbarInfo] = useState({
@@ -37,21 +37,21 @@ const ServiceList = () => {
             },
         },
     ];
-    // const fetchBikes = async () => {
-    //     setIsLoading(true)
-    //     const response = await getUserBikes(profileData?.id)
-    //     const { success, data } = response
-    //     if (success) {
-    //         setBikes(data)
-    //     }
-    //     setIsLoading(false)
-    // }
+    const fetchBikes = async () => {
+        setIsLoading(true)
+        const response = await getUserBikes(profileData?.id)
+        const { success, data } = response
+        if (success) {
+            setBikes(data)
+        }
+        setIsLoading(false)
+    }
     useEffect(() => {
-        // fetchBikes()
+        fetchBikes()
     }, [])
     return (
         <>
-            <Table data={services} columns={columns} />
+            <Table data={bikes} columns={columns} />
             <AlertSnackbar
                 open={snackbarOpen}
                 message={snackbarInfo.message}
@@ -63,4 +63,4 @@ const ServiceList = () => {
     )
 }
 
-export default ServiceList
+export default BikeList

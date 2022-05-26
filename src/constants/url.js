@@ -12,5 +12,6 @@ const config = process.env.NODE_ENV === 'development' ? dev : prod;
 
 module.exports = {
     userServiceUrl: `${config?.url?.BASE_URL}/auth`,
-    applicationServiceUrl: `${config?.url?.BASE_URL}/application`,
+    bikeServiceUrl: `${config?.url?.BASE_URL}/bike`,
+    featureServiceUrl: `${config?.url?.BASE_URL}/feature`,
 }
