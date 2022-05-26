@@ -74,6 +74,6 @@ export default function Router({ isLoggedIn }) {
         // { path: '*', element: <Navigate to="/404" /> }
       ]
     },
-    { path: '*', element: <Navigate to="/404" replace /> }
+    { path: '*', element: <Navigate to="/login" replace /> }
   ]);
 }
