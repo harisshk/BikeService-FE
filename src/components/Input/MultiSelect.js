@@ -18,53 +18,48 @@ const MenuProps = {
     },
 };
 export const CustomSelect = ({
-    style,
     setField,
-    field,
-    form,
     options,
+    placeHolder
 }) => {
-    console.log('######', options)
     const onChange = (e) => {
-        console.log(e.target?.value)
         const value = e?.target?.value
+        var arrIds = []
+        var amount =[]
+        options.map((item) => {
+            value.map((item1) => {
+                if (item1 === item?.name) {
+                    arrIds.push(item?._id)
+                    console.log(item)
+                    amount.push(item?.estimatedAmount)
+                }
+            })
+        })
+        const sum = amount.reduce((value, item) => value + item, 0);
+        console.log(sum)
+        setField('features', arrIds || [])
+        setField('estimatedAmount', sum || 0)
         setSelected([...value])
-        setField('features', [...value])
     };
 
     const [selected, setSelected] = React.useState([]);
-    const getValue = () => {
-        if (options) {
-            return []
-        } else {
-            return [];
-        }
-    };
+    const [selectedValues, setSelectedValues] = React.useState([]);
 
     return (
-        // <Select
-        //   className={className}
-        //   name={field.name}
-        //   value={getValue()}
-        // //   onChange={onChange}
-        //   placeholder={placeholder}
-        //   options={options}
-        //   isMulti={isMulti}
-        // />
         <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
+
             multiple
-            style={style}
+            label="Service"
             value={selected}
+            placeholder={placeHolder}
             onChange={onChange}
             input={<OutlinedInput label="Tag" />}
             renderValue={(selected) => selected.join(', ')}
             MenuProps={MenuProps}
         >
             {options.map((data) => (
-                <MenuItem key={data?._id} value={data?._id}>
-                    <Checkbox checked={selected.indexOf(data?._id) > -1 ? true : false} />
+                <MenuItem key={data?._id} value={data?.name}>
+                    <Checkbox checked={selected.indexOf(data?.name) > -1 ? true : false} />
                     <ListItemText primary={data?.name} />
                 </MenuItem>
             ))}

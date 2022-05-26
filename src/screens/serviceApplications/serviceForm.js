@@ -10,12 +10,19 @@ import {
     MenuItem,
     FormControl,
     TextField,
+    Typography,
 } from '@mui/material';
 // Service imports
-import {  getUserBikes } from "../../services/bikeService";
+import { getUserBikes } from "../../services/bikeService";
 import { useSelector } from "react-redux";
 import { getAllFeatures } from "../../services/featuresService";
 import CustomSelect from "../../components/Input/MultiSelect";
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { parse } from 'date-fns'
+import { bookService } from "../../services/servicesService";
+
 export const CreateService = (props) => {
     const profileData = useSelector(data => data?.profile)
 
@@ -29,35 +36,47 @@ export const CreateService = (props) => {
     const navigate = useNavigate();
 
     const style = { width: "100%", margin: "10px 10px", }
-    const BikeSchema = Validation.object().shape({
-        bikeMake: Validation.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Bike Make required'),
-        bikeModel: Validation.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Bike Model required'),
-        engineNumber: Validation.string()
-            .min(2, 'Too Short!')
-            .max(50, 'Too Long!')
-            .required('Engine number required'),
-        registrationNumber: Validation.string()
-            .min(9, 'Too Short!')
-            .max(10, 'Too Long!')
-            .required('Registration number required'),
-    });
     const formik = useFormik({
         initialValues: {
-            bikeMake: '',
-            bikeModel: '',
-            engineNumber: '',
-            registrationNumber: '',
+            bike: '',
+            features: [],
+            bookingDate: '',
+            estimatedAmount: 0
 
         },
-        validationSchema: BikeSchema,
         onSubmit: async (data) => {
-            // const { bikeMake, bikeModel, engineNumber, registrationNumber } = data
+            const { bike, features, bookingDate, estimatedAmount } = data
+            if (bike !== '' && features?.length !== 0 && bookingDate !== '') {
+                const response = await bookService({
+                    bike,
+                    features,
+                    owner: profileData?.id,
+                    bookingDate: bookingDate.toISOString(),
+                    serviceAmount: estimatedAmount
+                })
+                if (response.success) {
+                    setSnackbarInfo({
+                        message: "Bike added successfully",
+                        variant: "success",
+                    });
+                    setSnackbarOpen(true);
+                    setTimeout(() => {
+                        navigate('services/all');
+                    }, 2000);
+                } else {
+                    setSnackbarInfo({
+                        message: "Bike cannot be added",
+                        variant: "error",
+                    });
+                    setSnackbarOpen(true);
+                }
+            } else {
+                setSnackbarInfo({
+                    message: "All fields are required",
+                    variant: "warning",
+                });
+                setSnackbarOpen(true);
+            }
             // const registerResponse = await createBike({
             //     bikeMake,
             //     bikeModel,
@@ -98,18 +117,17 @@ export const CreateService = (props) => {
             getAllFeatures(),
             getUserBikes(profileData?.id)
         ]);
-        if(featuresResponse?.success && bikeResponse?.success){
+        if (featuresResponse?.success && bikeResponse?.success) {
             setBikes(bikeResponse?.data)
             setFeatures(featuresResponse?.data)
         }
     }
     useEffect(() => {
         fetchData()
-    },[])
+    }, [])
     return (
         <div>
-            {console.log(values, '00000000')}
-            <FormikProvider value={formik}>
+            { bikes.length !==0 ?<FormikProvider value={formik}>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                     <Grid container >
                         <Grid xs={1} md={2} lg={3}>
@@ -118,7 +136,7 @@ export const CreateService = (props) => {
                             <FormControl style={style} fullWidth>
                                 <TextField
                                     multiple
-                                    select 
+                                    select
                                     label={"Bike"}
                                     {...getFieldProps('bike')}
                                     error={Boolean(touched.gender && errors.gender)}
@@ -131,20 +149,27 @@ export const CreateService = (props) => {
                                     })}
                                 </TextField>
                             </FormControl>
-                            <TextField
-                                style={style}
-                                fullWidth
-                                type="text"
-                                label="Bike Model"
-                                placeholder="Eg: Pulsar, Apache"
-                                {...getFieldProps('bikeModel')}
-                                error={Boolean(touched.bikeModel && errors.bikeModel)}
-                                helperText={touched.bikeModel && errors.bikeModel}
-                            />
-
-                            <CustomSelect style={style} options={features} setField={setFieldValue}
-                            />
-
+                            <FormControl style={style} fullWidth>
+                                <CustomSelect placeHolder={'Service'} options={features} setField={setFieldValue}
+                                />
+                            </FormControl>
+                            <FormControl style={style}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <MobileDatePicker
+                                        label="Booking Date"
+                                        style={style}
+                                        minDate={new Date()}
+                                        value={values.bookingDate}
+                                        onChange={(newValue) => {
+                                            setFieldValue('bookingDate', new Date(newValue));
+                                        }}
+                                        renderInput={(params) => <TextField {...params} />}
+                                    />
+                                </LocalizationProvider>
+                            </FormControl>
+                            <FormControl>
+                                <Typography variant="h5">Estimated Amount : {values?.estimatedAmount} </Typography>
+                            </FormControl>
                             <Box sx={{ mt: 3 }} style={{ display: "flex", justifyContent: "end" }}>
                                 <Button type="reset" color="error" >
                                     Reset
@@ -160,6 +185,12 @@ export const CreateService = (props) => {
 
                 </Form>
             </FormikProvider>
+            :
+            <Box>
+                <Typography variant="h5">
+                    Add Bike to book a service
+                </Typography>
+            </Box>}
             <AlertSnackbar
                 open={snackbarOpen}
                 message={snackbarInfo.message}

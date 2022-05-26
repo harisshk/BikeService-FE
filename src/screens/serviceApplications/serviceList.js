@@ -4,11 +4,11 @@ import { Button } from "@mui/material";
 import { AlertSnackbar } from "../../components/Snackbar";
 import Loader from '../../components/Loader'
 import { useSelector } from "react-redux";
-import { getUserBikes } from "../../services/bikeService";
+import { getUserServices } from "../../services/servicesService";
 import dateFormat from "dateformat";
 
 const ServiceList = () => {
-    const profileData = useSelector(data=>data?.profile)
+    const profileData = useSelector(data => data?.profile)
     const [services, setServices] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -17,37 +17,35 @@ const ServiceList = () => {
         variant: "",
     });
     const columns = [
-        { title: "Bike Make", field: "bikeMake" },
-        { title: "Bike Model", field: "bikeModel" },
-        { title: "Registration Number", field: "registrationNumber" },
-        { title: "Engine Number", field: "engineNumber" },
+        { title: "Owner Name", field: "owner.name" },
+        { title: "Bike Make", field: "bike.bikeMake" },
+        { title: "Bike Model", field: "bike.bikeModel" },
+        { title: "Estimated amount", field: "serviceAmount" },
+        { title: "Status", field: "status" },
         {
-            title: "Added on",
+            title: "Booked for ",
             field: "createdAt",
             render: (rowData) => {
                 return (
                     <div>
-                        <p style={{ margin: "0px" }}>{dateFormat(rowData.createdAt, "mmm dS, yyyy ")}
-                            <p style={{ color: "#999999", margin: "0px" }}>
-                                {dateFormat(rowData.createdAt, "shortTime")}
-                            </p>
+                        <p style={{ margin: "0px" }}>{dateFormat(rowData.bookedDate, "mmm dS, yyyy ")}
                         </p>
                     </div>
                 );
             },
         },
     ];
-    // const fetchBikes = async () => {
-    //     setIsLoading(true)
-    //     const response = await getUserBikes(profileData?.id)
-    //     const { success, data } = response
-    //     if (success) {
-    //         setBikes(data)
-    //     }
-    //     setIsLoading(false)
-    // }
+    const fetchBikes = async () => {
+        setIsLoading(true)
+        const response = await getUserServices(profileData?.id)
+        const { success, data } = response
+        if (success) {
+            setServices(data)
+        }
+        setIsLoading(false)
+    }
     useEffect(() => {
-        // fetchBikes()
+        fetchBikes()
     }, [])
     return (
         <>
