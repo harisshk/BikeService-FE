@@ -60,7 +60,7 @@ export const CreateService = (props) => {
                     });
                     setSnackbarOpen(true);
                     setTimeout(() => {
-                        navigate('services/all');
+                        navigate('/services/all', { replace: true });
                     }, 2000);
                 } else {
                     setSnackbarInfo({

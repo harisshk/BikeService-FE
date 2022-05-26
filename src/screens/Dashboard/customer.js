@@ -7,7 +7,7 @@ import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
 // components
 import PageContainer from '../../components/Page';
 import DashboardCard from '../../components/Card';
-
+import Loader from '../../components/Loader'
 //services
 import { getDashboardCustomer } from '../../services/userService';
 // ----------------------------------------------------------------------
@@ -18,11 +18,12 @@ export function CustomerDashboard() {
         pendingService: 0,
         completedService: 0,
     })
+    const [isLoading, setIsLoading] = useState(false)
     const profileData = useSelector(data => data?.profile)
 
     const fetchDashboardInfo = async () => {
+        setIsLoading(true)
         const response = await getDashboardCustomer(profileData?.id)
-        console.log(response)
         const { success, data } = response
         if (success) {
             setCountData({
@@ -30,6 +31,7 @@ export function CustomerDashboard() {
                 serviceData: data?.serviceData
             })
         }
+        setIsLoading(false)
     }
 
     useEffect(() => {
@@ -57,6 +59,7 @@ export function CustomerDashboard() {
                     </Grid>
                 </Grid>
             </Container>
+            <Loader open={isLoading} />
         </PageContainer>
     );
 }
