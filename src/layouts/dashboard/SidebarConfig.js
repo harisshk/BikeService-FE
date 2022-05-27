@@ -42,6 +42,17 @@ const sidebarConfig = [
       },
     ],
   },
+  {
+    title: 'Services',
+    role: 'OWNER',
+    icon: <MiscellaneousServicesIcon />,
+    children: [
+      {
+        title: 'All Services',
+        path: '/services/all',
+      },
+    ],
+  },
 ];
 
 export default sidebarConfig;

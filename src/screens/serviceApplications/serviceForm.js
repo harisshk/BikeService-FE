@@ -119,7 +119,6 @@ export const CreateService = (props) => {
                             </FormControl>
                             <FormControl style={style} fullWidth>
                                 <InputLabel id="test-select-label">Service</InputLabel>
-
                                 <CustomSelect placeHolder={'Service'} options={features} setField={setFieldValue}
                                 />
                             </FormControl>

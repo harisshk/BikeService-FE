@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useRoutes, useLocation } from 'react-router-dom';
+import { Navigate, useRoutes, useLocation, useNavigate } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
@@ -14,8 +14,10 @@ import CreateService from './screens/serviceApplications/serviceForm';
 import ServiceList from './screens/serviceApplications/serviceList';
 // ----------------------------------------------------------------------
 
-export default function Router({ isLoggedIn }) {
+export default function Router({ isLoggedIn, role }) {
   const location = useLocation();
+  const navigate = useNavigate()
+
   const getBrandText = () => {
     const brandText = location.pathname;
     switch (brandText) {
@@ -35,29 +37,40 @@ export default function Router({ isLoggedIn }) {
         return '';
     }
   };
+
+  const checkedLogin = isLoggedIn ?
+    <DashboardLayout title={getBrandText()} />
+    : <Navigate to="/login" />
+
+  const CheckRole = ({ children, requiredRole }) => {
+    console.log(requiredRole, role)
+    if (requiredRole === role) {
+      return (children)
+    } else {
+      navigate('/login')
+    }
+  }
   return useRoutes([
     {
       path: '/',
-      element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
+      element: checkedLogin,
       children: [
-        { path: '', element:  <Navigate to="/home" />  },
-        { path: 'home', element: <Dashboard />  },
-        // { path: 'products', element: <Products /> },
-        // { path: 'applications', element: <ApplicationList /> },
+        { path: '', element: <Navigate to="/home" /> },
+        { path: 'home', element: <Dashboard /> }
       ]
     },
     {
       path: '/bike',
-      element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
+      element: checkedLogin,
       children: [
-        { path: 'all', element: <BikeList /> },
-        { path: 'add', element: <BikeForm /> },
-        { path: 'edit/:id', element: <BikeForm /> },
+        { path: 'all', element: <CheckRole requiredRole='CUSTOMER'><BikeList /></CheckRole> },
+        { path: 'add', element: <CheckRole requiredRole='CUSTOMER'><BikeForm /></CheckRole> },
+        { path: 'edit/:id', element: <CheckRole requiredRole='CUSTOMER'><BikeForm /></CheckRole> },
       ]
     },
     {
       path: '/services',
-      element: isLoggedIn ? <DashboardLayout title={getBrandText()} /> : <Navigate to="/login" />,
+      element: checkedLogin,
       children: [
         { path: 'all', element: <ServiceList /> },
         { path: 'new', element: <CreateService /> },
@@ -70,8 +83,6 @@ export default function Router({ isLoggedIn }) {
         { path: '/', element: <Navigate to="/login" /> },
         { path: 'login', element: <Login /> },
         { path: 'signup', element: <Signup /> },
-        // { path: '404', element: <NotFound /> },
-        // { path: '*', element: <Navigate to="/404" /> }
       ]
     },
     { path: '*', element: <Navigate to="/login" replace /> }
