@@ -2,6 +2,7 @@
 import Iconify from '../../components/Iconify';
 import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
+import ConstructionIcon from '@mui/icons-material/Construction';
 // ----------------------------------------------------------------------
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -50,6 +51,21 @@ const sidebarConfig = [
       {
         title: 'All Services',
         path: '/services/all',
+      },
+    ],
+  },
+  {
+    title: 'Offering Services',
+    role: 'OWNER',
+    icon: <ConstructionIcon />,
+    children: [
+      {
+        title: 'All Services',
+        path: '/features/all',
+      },
+      {
+        title: 'Add Service Feature',
+        path: '/features/add',
       },
     ],
   },

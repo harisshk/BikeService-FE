@@ -12,6 +12,8 @@ import BikeForm from './screens/bikes/bikeForm';
 import Dashboard from './screens/dashboard';
 import CreateService from './screens/serviceApplications/serviceForm';
 import ServiceList from './screens/serviceApplications/serviceList';
+import FeatureList from './screens/features/featureList';
+import FeatureForm from './screens/features/featureForm';
 // ----------------------------------------------------------------------
 
 export default function Router({ isLoggedIn, role }) {
@@ -43,11 +45,10 @@ export default function Router({ isLoggedIn, role }) {
     : <Navigate to="/login" />
 
   const CheckRole = ({ children, requiredRole }) => {
-    console.log(requiredRole, role)
     if (requiredRole === role) {
       return (children)
     } else {
-      navigate('/login')
+      navigate('/login', { replace: true })
     }
   }
   return useRoutes([
@@ -66,6 +67,15 @@ export default function Router({ isLoggedIn, role }) {
         { path: 'all', element: <CheckRole requiredRole='CUSTOMER'><BikeList /></CheckRole> },
         { path: 'add', element: <CheckRole requiredRole='CUSTOMER'><BikeForm /></CheckRole> },
         { path: 'edit/:id', element: <CheckRole requiredRole='CUSTOMER'><BikeForm /></CheckRole> },
+      ]
+    },
+    {
+      path: '/features',
+      element: checkedLogin,
+      children: [
+        { path: 'all', element: <CheckRole requiredRole='OWNER'><FeatureList /></CheckRole> },
+        { path: 'add', element: <CheckRole requiredRole='OWNER'><FeatureForm /></CheckRole> },
+        { path: 'edit/:id', element: <CheckRole requiredRole='OWNER'><FeatureForm /></CheckRole> },
       ]
     },
     {

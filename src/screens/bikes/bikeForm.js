@@ -6,18 +6,18 @@ import { AlertSnackbar } from '../../components/Snackbar';
 import {
     Box,
     Grid,
-    FormControl,
     Button,
-    MenuItem,
     TextField,
 } from '@mui/material';
 // Service imports
 import { createBike, getBikeById, editBikeData } from "../../services/bikeService";
 import { useSelector } from "react-redux";
+import Loader from "../../components/Loader";
 export const BikeForm = (props) => {
     const profileData = useSelector(data => data?.profile)
     const bikeId = useParams()
     const [isEdit, setIsEdit] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [snackbarOpen, setSnackbarOpen] = useState(false)
     const [snackbarInfo, setSnackbarInfo] = useState({
         message: "",
@@ -52,23 +52,24 @@ export const BikeForm = (props) => {
         },
         validationSchema: BikeSchema,
         onSubmit: async (data) => {
+            setIsLoading(true)
             const { bikeMake, bikeModel, engineNumber, registrationNumber } = data
-            const registerResponse = isEdit?
-            await editBikeData(bikeId?.id,{
-                bikeMake,
-                bikeModel,
-                engineNumber,
-                registrationNumber: registrationNumber.toUpperCase(),
-                owner: profileData?.id
-            })
-            :
-            await createBike({
-                bikeMake,
-                bikeModel,
-                engineNumber,
-                registrationNumber: registrationNumber.toUpperCase(),
-                owner: profileData?.id
-            })
+            const registerResponse = isEdit ?
+                await editBikeData(bikeId?.id, {
+                    bikeMake,
+                    bikeModel,
+                    engineNumber,
+                    registrationNumber: registrationNumber.toUpperCase(),
+                    owner: profileData?.id
+                })
+                :
+                await createBike({
+                    bikeMake,
+                    bikeModel,
+                    engineNumber,
+                    registrationNumber: registrationNumber.toUpperCase(),
+                    owner: profileData?.id
+                })
             if (registerResponse.success) {
                 if (registerResponse.duplicate) {
                     setSnackbarInfo({
@@ -78,17 +79,19 @@ export const BikeForm = (props) => {
                     setSnackbarOpen(true);
                 } else {
                     setSnackbarInfo({
-                        message: `Bike ${isEdit?'updated':'added'} successfully`,
+                        message: `Bike ${isEdit ? 'updated' : 'added'} successfully`,
                         variant: "success",
                     });
                     setSnackbarOpen(true);
                     setTimeout(() => {
+                        setIsLoading(false)
                         navigate('/bike/all');
                     }, 2000);
                 }
             } else {
+                setIsLoading(false)
                 setSnackbarInfo({
-                    message: `Bike cannot be ${isEdit?'updated':'added'}`,
+                    message: `Bike cannot be ${isEdit ? 'updated' : 'added'}`,
                     variant: "error",
                 });
                 setSnackbarOpen(true);
@@ -96,30 +99,39 @@ export const BikeForm = (props) => {
         }
     });
     const { errors, touched, handleSubmit, getFieldProps, values, setFieldValue } = formik;
-    const getBikeData = async (bikeId) => {
-        const response = await getBikeById(bikeId)
+    const getBikeData = async () => {
+        const response = await getBikeById(bikeId?.id)
+        setIsLoading(true)
         if (response?.success) {
             const { bikeMake, bikeModel, registrationNumber, engineNumber } = response.data
             setFieldValue('bikeMake', bikeMake)
             setFieldValue('bikeModel', bikeModel)
             setFieldValue('registrationNumber', registrationNumber)
             setFieldValue('engineNumber', engineNumber)
+        } else {
+            setSnackbarOpen(true)
+            setSnackbarInfo({
+                message: `Bike data cannot be fetched`,
+                variant: "error",
+            });
         }
+        setIsLoading(false)
     }
     useEffect(() => {
-        if (bikeId?.id !== '') {
+        if (bikeId?.id) {
             setIsEdit(true)
-            getBikeData(bikeId?.id)
+            getBikeData()
         }
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [bikeId?.id])
     return (
         <div>
             <FormikProvider value={formik}>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                     <Grid container >
-                        <Grid xs={1} md={2} lg={3}>
+                        <Grid item xs={1} md={2} lg={3}>
                         </Grid>
-                        <Grid xs={10} md={8} lg={6}>
+                        <Grid item xs={10} md={8} lg={6}>
                             <TextField
                                 style={style}
                                 fullWidth
@@ -172,7 +184,7 @@ export const BikeForm = (props) => {
                                 </Button>
                             </Box>
                         </Grid>
-                        <Grid xs={1} md={2} lg={3}>
+                        <Grid item xs={1} md={2} lg={3}>
                         </Grid>
                     </Grid>
 
@@ -184,6 +196,7 @@ export const BikeForm = (props) => {
                 variant={snackbarInfo.variant}
                 handleClose={() => setSnackbarOpen(false)}
             />
+            <Loader open={isLoading} />
         </div>
     )
 }
