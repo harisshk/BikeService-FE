@@ -24,6 +24,7 @@ export default function RegisterForm() {
 
   const genders = ["Male", "Female", "Other"]
 
+  const [isLoading, setIsLoading] = useState(false)
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarInfo, setSnackbarInfo] = useState({
     message: "",
@@ -41,7 +42,7 @@ export default function RegisterForm() {
     password: Yup.string().min(6, 'Too Short!').max(20, 'Too Long!').required('Password is required'),
     confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Password is required'),
     gender: Yup.string().required('Gender is required'),
-    phoneNumber: Yup.string().required('Phone Number is required').max(10, "Not valid"),
+    phoneNumber: Yup.string().required('Phone Number is required').max(10, "Not a valid Phone number"),
   });
 
   const formik = useFormik({
@@ -78,12 +79,14 @@ export default function RegisterForm() {
       role: "CUSTOMER",
 
     })
+    setIsLoading(true)
     if (!registerResponse.error) {
       if (registerResponse.duplicate) {
         setSnackbarInfo({
           message: "User with email already exists",
           variant: "warning",
         });
+        setIsLoading(false)
         setSnackbarOpen(true);
       } else {
         setSnackbarInfo({
@@ -92,6 +95,7 @@ export default function RegisterForm() {
         });
         setSnackbarOpen(true);
         setTimeout(() => {
+          setIsLoading(false)
           navigate('/login', { replace: true });
         }, 2000);
       }
@@ -101,7 +105,9 @@ export default function RegisterForm() {
         variant: "error",
       });
       setSnackbarOpen(true);
+      setIsLoading(false)
     }
+
   }
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
   return (
@@ -200,10 +206,10 @@ export default function RegisterForm() {
           </Box>
           <br />
           <div style={{ display: "flex", justifyContent: "end" }}>
-            <Button type="reset" color="error" >
+            <Button disabled={isLoading} type="reset" color="error" >
               Reset
             </Button> &nbsp;
-            <LoadingButton loading={isSubmitting}
+            <LoadingButton loading={isSubmitting} disabled={isLoading}
               type="submit" variant="contained" >
               Register
             </LoadingButton >
