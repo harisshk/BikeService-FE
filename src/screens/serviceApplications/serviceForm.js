@@ -21,10 +21,12 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { bookService } from "../../services/servicesService";
+import Loader from "../../components/Loader";
 
 export const CreateService = (props) => {
     const profileData = useSelector(data => data?.profile)
 
+    const [isLoading, setIsLoading] = useState(false)
     const [bikes, setBikes] = useState([])
     const [features, setFeatures] = useState([])
     const [snackbarOpen, setSnackbarOpen] = useState(false)
@@ -45,6 +47,7 @@ export const CreateService = (props) => {
         },
         onSubmit: async (data) => {
             const { bike, features, bookingDate, estimatedAmount } = data
+            setIsLoading(true)
             if (bike !== '' && features?.length !== 0 && bookingDate !== '') {
                 const response = await bookService({
                     bike,
@@ -76,10 +79,12 @@ export const CreateService = (props) => {
                 });
                 setSnackbarOpen(true);
             }
+            setIsLoading(false)
         }
     });
     const { errors, touched, handleSubmit, getFieldProps, setFieldValue, values } = formik;
     const fetchData = async () => {
+        setIsLoading(true)
         const [featuresResponse, bikeResponse] = await Promise.all([
             getAllFeatures(),
             getUserBikes(profileData?.id)
@@ -88,6 +93,7 @@ export const CreateService = (props) => {
             setBikes(bikeResponse?.data)
             setFeatures(featuresResponse?.data)
         }
+        setIsLoading(false)
     }
     useEffect(() => {
         fetchData()
@@ -166,6 +172,7 @@ export const CreateService = (props) => {
                 variant={snackbarInfo.variant}
                 handleClose={() => setSnackbarOpen(false)}
             />
+            <Loader open={isLoading} />
         </div>
     )
 }

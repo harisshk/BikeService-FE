@@ -34,7 +34,43 @@ const OwnerServiceList = () => {
         { title: "Bike Make", field: "bike.bikeMake" },
         { title: "Bike Model", field: "bike.bikeModel" },
         { title: "Estimated amount", field: "serviceAmount" },
-        { title: "Status", field: "status" },
+        {
+            title: "Status", field: "status",
+            render: (rowData) => {
+                switch (rowData?.status) {
+                    case "PENDING":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#fff3c9", borderRadius: "10px", color: "#d68b00"
+                        }} >
+                            Pending
+                        </p>)
+                    case "REQUESTED":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#fff3c9", borderRadius: "10px", color: "#d68b00"
+                        }} >
+                            Requested
+                        </p>)
+                    case "COMPLETED":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#b2fa8e", borderRadius: "10px", color: "#267300"
+                        }} >
+                            Completed
+                        </p>)
+                    case "READYFORDELIVERY":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#b2fa8e", borderRadius: "10px", color: "#267300"
+                        }} >
+                            Ready for Delivery
+                        </p>)
+                    default:
+                        break;
+                }
+            }
+        },
         {
             title: "Booked for ",
             field: "createdAt",

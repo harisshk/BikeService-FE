@@ -26,7 +26,43 @@ const CustomerServiceList = () => {
         { title: "Bike Make", field: "bike.bikeMake" },
         { title: "Bike Model", field: "bike.bikeModel" },
         { title: "Estimated amount", field: "serviceAmount" },
-        { title: "Status", field: "status" },
+        {
+            title: "Status", field: "status",
+            render: (rowData) => {
+                switch (rowData?.status) {
+                    case "PENDING":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#fff3c9", borderRadius: "10px", color: "#d68b00"
+                        }} >
+                            Pending
+                        </p>)
+                    case "REQUESTED":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#fff3c9", borderRadius: "10px", color: "#d68b00"
+                        }} >
+                            Requested
+                        </p>)
+                    case "COMPLETED":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#b2fa8e", borderRadius: "10px", color: "#267300"
+                        }} >
+                            Completed
+                        </p>)
+                    case "READYFORDELIVERY":
+                        return (<p style={{
+                            padding: "2px", margin: "0 1rem",
+                            background: "#b2fa8e", borderRadius: "10px", color: "#267300"
+                        }} >
+                            Ready for Delivery
+                        </p>)
+                    default:
+                        break;
+                }
+            }
+        },
         {
             title: "Booked for ",
             field: "createdAt",
@@ -50,7 +86,7 @@ const CustomerServiceList = () => {
             setServices(filterByType(filter, data))
             setCopyServices(response.data)
         }
-        else{
+        else {
             setSnackbarOpen(false)
             setSnackbarInfo({
                 message: "Cannot fetch data",
@@ -70,19 +106,24 @@ const CustomerServiceList = () => {
     }
     const leftTabContents = (
         <React.Fragment>
-            <div style={{marginLeft:"10px"}} onClick={() => {
+            <div style={{ marginLeft: "10px", cursor: 'pointer' }} onClick={() => {
                 filterHandlerType("REQUESTED")
             }}>
-                <Chip label="Requested" style={(filter?.includes("REQUESTED")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff", cursor:'pointer' } : {}} className={"toolbarButton"} />
+                <Chip label="Requested" style={(filter?.includes("REQUESTED")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff", cursor: 'pointer' } : { cursor: 'pointer' }} className={"toolbarButton"} />
             </div>
-            <div style={{marginLeft:"10px"}} onClick={() => {
+            <div style={{ marginLeft: "10px", cursor: 'pointer' }} onClick={() => {
                 filterHandlerType("PENDING")
             }}>
-                <Chip label="Pending" style={(filter?.includes("PENDING")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff" } : {}} className="toolbarButton" />
+                <Chip label="Pending" style={(filter?.includes("PENDING")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff", cursor: 'pointer' } : { cursor: 'pointer' }} className="toolbarButton" />
             </div>
-            <div style={{marginLeft:"10px"}} onClick={() => {
+            <div style={{ marginLeft: "10px", cursor: 'pointer' }} onClick={() => {
+                filterHandlerType("READYFORDELIVERY")
+            }}>
+                <Chip label="Deliver Ready" style={(filter?.includes("READYFORDELIVERY")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff", cursor: 'pointer' } : { cursor: 'pointer' }} className="toolbarButton" />
+            </div>
+            <div style={{ marginLeft: "10px", cursor: 'pointer' }} onClick={() => {
                 filterHandlerType("COMPLETED")
-            }}><Chip label="Completed" style={(filter?.includes("COMPLETED")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff" } : {}} className="toolbarButton" /></div>
+            }}><Chip label="Completed" style={(filter?.includes("COMPLETED")) ? { backgroundColor: "rgb(94,113,228)", color: "#fff", cursor: 'pointer' } : { cursor: 'pointer' }} className="toolbarButton" /></div>
         </React.Fragment>
     )
     return (

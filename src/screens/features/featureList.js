@@ -4,7 +4,8 @@ import { AlertSnackbar } from "../../components/Snackbar";
 import Loader from '../../components/Loader'
 import dateFormat from "dateformat";
 import { useNavigate } from "react-router-dom";
-import { getAllFeatures } from "../../services/featuresService";
+import { getAllFeatures, editFeature } from "../../services/featuresService";
+import DeleteDialog from "../../components/Dialog/DeleteDialog";
 
 const FeatureList = () => {
     const navigate = useNavigate()
@@ -15,6 +16,10 @@ const FeatureList = () => {
         message: "",
         variant: "",
     });
+    const [deleteAction, setDeleteAction] = useState({
+        isDeleteModalOpen: false,
+        data: {}
+    })
     const columns = [
         { title: "Name", field: "name" },
         { title: "Estimated Amount", field: "estimatedAmount" },
@@ -26,9 +31,9 @@ const FeatureList = () => {
                     <div>
                         <p style={{ margin: "0px" }}>{dateFormat(rowData.createdAt, "mmm dS, yyyy ")}
                         </p>
-                            <span style={{ color: "#999999", margin: "0px" }}>
-                                {dateFormat(rowData.createdAt, "shortTime")}
-                            </span>
+                        <span style={{ color: "#999999", margin: "0px" }}>
+                            {dateFormat(rowData.createdAt, "shortTime")}
+                        </span>
                     </div>
                 );
             },
@@ -49,12 +54,37 @@ const FeatureList = () => {
         }
         setIsLoading(false)
     }
+    const deleteHandler = async (id) => {
+        setIsLoading(true)
+        const response = await editFeature(
+            id, { isDeleted: true }
+        )
+        const { success } = response
+        if (success) {
+            fetchData()
+            setSnackbarOpen(true)
+            setSnackbarInfo({
+                message: "Data updated",
+                variant: "success",
+            })
+        }
+        else {
+            setSnackbarOpen(true)
+            setSnackbarInfo({
+                message: "Data cannot be updated",
+                variant: "error",
+            })
+        }
+        setIsLoading(false)
+    }
     useEffect(() => {
         fetchData()
     }, [])
     return (
         <>
-            <Table data={features} columns={columns} editable deleteAction onEdit={(data) => { navigate(`/features/edit/${data?._id}`) }} />
+            <Table data={features} columns={columns} editable canDelete onDelete={(data) => {
+                setDeleteAction({ isDeleteModalOpen: true, data })
+            }} onEdit={(data) => { navigate(`/features/edit/${data?._id}`) }} />
             <AlertSnackbar
                 open={snackbarOpen}
                 message={snackbarInfo.message}
@@ -62,6 +92,16 @@ const FeatureList = () => {
                 handleClose={() => setSnackbarOpen(false)}
             />
             <Loader open={isLoading} />
+            <DeleteDialog data={deleteAction?.data} open={deleteAction?.isDeleteModalOpen} onDelete={(id) => {
+                deleteHandler(id)
+                setDeleteAction({
+                    isDeleteModalOpen: false,
+                    data: {}
+                })
+            }} onClose={() => setDeleteAction({
+                isDeleteModalOpen: false,
+                data: {}
+            })} />
         </>
     )
 }
