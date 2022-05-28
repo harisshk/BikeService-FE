@@ -29,7 +29,7 @@ const ProductsCard = (props) => (
                     </Typography>
                     <Typography
                         color="textPrimary"
-                        variant="h3"
+                        variant="h4"
                     >
                         {props.count}
                     </Typography>

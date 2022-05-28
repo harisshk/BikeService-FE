@@ -15,3 +15,17 @@ export const getDashboardCustomer = async (userId) => {
     }
 };
 
+export const getDashboardOwner = async () => {
+    try {
+        const response = await axios.get(`${userServiceUrl}/owner/dashboard`)
+        if (response.data.success) {
+            return {
+                ...response?.data
+            }
+        }
+    } catch (error) {
+        console.log("err", error)
+        return { success: false, message: error?.response?.data?.message };
+    }
+};
+

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 // components
-import Logo from '../components/Logo';
 
 // ----------------------------------------------------------------------
 
@@ -32,8 +31,7 @@ AuthLayout.propTypes = {
 export default function AuthLayout({ children }) {
   return (
     <HeaderStyle>
-      <Logo />
-
+      <div></div>
       <Typography
         variant="body2"
         sx={{

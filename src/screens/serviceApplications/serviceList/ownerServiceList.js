@@ -7,7 +7,7 @@ import dateFormat from "dateformat";
 import ToolbarTab from "../../../components/Toolbar/Toolbar";
 import { Chip } from 'primereact/chip';
 import { addFilter, filterByType } from '../../../utils/FilterbyType/filterByType'
-import ServiceEdit from "../../../components/Dialog/ServiceEdit";
+import ServiceEdit from "../../../components/Dialog/serviceEdit";
 import DeleteDialog from "../../../components/Dialog/DeleteDialog";
 
 const OwnerServiceList = () => {

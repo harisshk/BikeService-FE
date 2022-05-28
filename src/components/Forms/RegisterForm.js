@@ -11,18 +11,13 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
-// import Iconify from '../../../components/Iconify';
 import { Grid, Box, FormControl, Checkbox, Button } from "@mui/material";
-import UploadIcon from '@mui/icons-material/Upload';
-import { styled } from '@mui/material/styles';
 import { AlertSnackbarBC } from '../Snackbar';
 
 // Service imports
 import { register } from "../../services/authService";
 // ----------------------------------------------------------------------
-const Input = styled('input')({
-  display: 'none',
-});
+
 export default function RegisterForm() {
   const navigate = useNavigate();
   const style = { width: "100%", margin: "10px 10px", }

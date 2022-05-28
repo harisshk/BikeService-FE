@@ -1,17 +1,15 @@
 // component
-import Iconify from '../../components/Iconify';
 import TwoWheelerIcon from '@mui/icons-material/TwoWheeler';
 import MiscellaneousServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import ConstructionIcon from '@mui/icons-material/Construction';
 // ----------------------------------------------------------------------
 
-const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
-
+import PieChartIcon from '@mui/icons-material/PieChart';
 const sidebarConfig = [
   {
     title: 'Dashboard',
     path: '/home',
-    icon: getIcon('eva:pie-chart-2-fill')
+    icon: <PieChartIcon />
   },
   {
     title: 'Services',

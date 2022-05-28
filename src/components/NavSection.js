@@ -4,8 +4,8 @@ import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom'
 // material
 import { alpha, useTheme, styled } from '@mui/material/styles';
 import { Box, List, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
-//
-import Iconify from './Iconify';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 // ----------------------------------------------------------------------
 
@@ -82,10 +82,8 @@ function NavItem({ item, active }) {
           <ListItemIconStyle>{icon && icon}</ListItemIconStyle>
           <ListItemText disableTypography primary={title} />
           {info && info}
-          <Iconify
-            icon={open ? 'eva:arrow-ios-downward-fill' : 'eva:arrow-ios-forward-fill'}
-            sx={{ width: 16, height: 16, ml: 1 }}
-          />
+          {open ? <KeyboardArrowDownIcon /> : <ChevronRightIcon />}
+
         </ListItemStyle>
 
         <Collapse in={open} timeout="auto" unmountOnExit>
@@ -159,14 +157,14 @@ export default function NavSection({ navConfig, profile, ...other }) {
     <Box {...other}>
       <List disablePadding>
         {navConfig.map((item) => {
-          if(item?.role){
-            if(item?.role === profile?.role ){
-              return(
+          if (item?.role) {
+            if (item?.role === profile?.role) {
+              return (
                 <NavItem key={item.title} item={item} active={match} />
               )
             }
-          }else {
-            return(
+          } else {
+            return (
               <NavItem key={item.title} item={item} active={match} />
             )
           }

@@ -13,8 +13,8 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-// component
-import Iconify from '../../components/Iconify';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 // redux
 import { useDispatch } from 'react-redux';
 import { setProfile } from '../../redux/action/profile'
@@ -105,7 +105,9 @@ export function LoginForm() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                      {
+                       !showPassword? <RemoveRedEyeIcon/>:<VisibilityOffIcon />
+                      }
                     </IconButton>
                   </InputAdornment>
                 )
