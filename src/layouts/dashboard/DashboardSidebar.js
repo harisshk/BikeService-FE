@@ -61,7 +61,7 @@ export function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
     >
       <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
         {/* <Logo /> */}
-        <h2>;</h2>
+        <h2>Bike Service</h2>
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
