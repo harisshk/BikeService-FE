@@ -25,10 +25,10 @@ const FeatureList = () => {
                 return (
                     <div>
                         <p style={{ margin: "0px" }}>{dateFormat(rowData.createdAt, "mmm dS, yyyy ")}
-                            <p style={{ color: "#999999", margin: "0px" }}>
-                                {dateFormat(rowData.createdAt, "shortTime")}
-                            </p>
                         </p>
+                            <span style={{ color: "#999999", margin: "0px" }}>
+                                {dateFormat(rowData.createdAt, "shortTime")}
+                            </span>
                     </div>
                 );
             },

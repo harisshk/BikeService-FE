@@ -44,6 +44,7 @@ export const bookService = async (payload) => {
 };
 
 export const updateService = async (payload, id) => {
+    console.log("UPDATE", payload, id)
     try {
         const response = await axios.put(`${servicesServiceUrl}/edit/${id}`, payload)
         if (response.data.success) {

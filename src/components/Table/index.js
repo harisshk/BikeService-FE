@@ -6,17 +6,10 @@ import { Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import './index.css'
-import { AlertSnackbar } from "../Snackbar";
 
 export const Table = (props) => {
-    const { data, columns, deleteAction, editable, onEdit} = props
+    const { data, columns, canDelete, editable, onEdit, onDelete} = props
     const [globalFilter, setGlobalFilter] = useState("")
-    const [snackbarInfo, setSnackbarInfo] = useState({});
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    // const reset = () => {
-    //     setGlobalFilter('');
-    //     setGlobalFilter('');
-    // }
 
     const customAction = (e) => {
         return (
@@ -27,10 +20,9 @@ export const Table = (props) => {
                         onEdit(e)
                     }} className="pi pi-pencil"></EditIcon>
                 </Tooltip>}
-                {deleteAction && <Tooltip title="Delete">
+                {canDelete && <Tooltip title="Delete">
                     <DeleteIcon style={{ cursor: "pointer", marginLeft: "20px" }} onClick={() => {
-                        // setOpenDeleteDialog(true)
-                        // setDeleteData(e)
+                        onDelete(e)
                     }} className="pi pi-trash"></DeleteIcon>
                 </Tooltip>}
             </div>
@@ -80,17 +72,10 @@ export const Table = (props) => {
                         />
                     )
                 })}
-                {(deleteAction || editable) && <Column headerStyle={{ textAlign: "center", fontWeight: 600, backgroundColor: "#e6eaed" }} header="Actions" body={(e) => customAction(e)}
+                {(canDelete || editable) && <Column headerStyle={{ textAlign: "center", fontWeight: 600, backgroundColor: "#e6eaed" }} header="Actions" body={(e) => customAction(e)}
                     style={{ textAlign: "center", justifyContent: "center" }}
                 ></Column>}
             </DataTable>
-
-            <AlertSnackbar
-                open={snackbarOpen}
-                message={snackbarInfo.message}
-                variant={snackbarInfo.variant}
-                handleClose={() => setSnackbarOpen(false)}
-            />
         </div>
 
     )

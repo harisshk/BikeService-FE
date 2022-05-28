@@ -65,7 +65,7 @@ function ServiceEdit(props) {
                                 {status && status.map((value, index) => {
                                     if (index >= statusId[data?.status]) {
                                         return (
-                                            <MenuItem value={value?.value}>{value?.name}</MenuItem>
+                                            <MenuItem key={value?.value} value={value?.value}>{value?.name}</MenuItem>
                                         )
                                     }
                                     return null

@@ -7,7 +7,8 @@ import dateFormat from "dateformat";
 import ToolbarTab from "../../../components/Toolbar/Toolbar";
 import { Chip } from 'primereact/chip';
 import { addFilter, filterByType } from '../../../utils/FilterbyType/filterByType'
-import ServiceEdit from "../../../components/Dialog/serviceEdit";
+import ServiceEdit from "../../../components/Dialog/ServiceEdit";
+import DeleteDialog from "../../../components/Dialog/DeleteDialog";
 
 const OwnerServiceList = () => {
     const [services, setServices] = useState([])
@@ -20,6 +21,10 @@ const OwnerServiceList = () => {
     });
     const [editData, setEditData] = useState({
         isEdit: false,
+        data: {}
+    })
+    const [deleteAction, setDeleteAction] = useState({
+        isDeleteModalOpen: false,
         data: {}
     })
     const [filter, setFilter] = useState(["REQUESTED"])
@@ -64,7 +69,30 @@ const OwnerServiceList = () => {
     const updateHandler = async (status, serviceAmount, id) => {
         setIsLoading(true)
         const response = await updateService(
-            {status, serviceAmount},id
+            { status, serviceAmount }, id
+        )
+        const { success } = response
+        if (success) {
+            fetchData()
+            setSnackbarOpen(true)
+            setSnackbarInfo({
+                message: "Data updated",
+                variant: "success",
+            })
+        }
+        else {
+            setSnackbarOpen(true)
+            setSnackbarInfo({
+                message: "Data cannot be updated",
+                variant: "error",
+            })
+        }
+        setIsLoading(false)
+    }
+    const deleteHandler = async (id) => {
+        setIsLoading(true)
+        const response = await updateService(
+            { isDelete: true }, id
         )
         const { success } = response
         if (success) {
@@ -120,6 +148,8 @@ const OwnerServiceList = () => {
             <ToolbarTab leftContents={leftTabContents} />
             <Table data={services} columns={columns} editable onEdit={(data) => {
                 setEditData({ isEdit: true, data })
+            }} canDelete onDelete={(data) => {
+                setDeleteAction({ isDeleteModalOpen: true, data })
             }} />
             <AlertSnackbar
                 open={snackbarOpen}
@@ -133,14 +163,23 @@ const OwnerServiceList = () => {
                     isEdit: false,
                     data: {}
                 })
-            }}  onSubmit={(status, serviceAmount, id)=>{
-                console.log(id)
+            }} onSubmit={(status, serviceAmount, id) => {
                 updateHandler(status, serviceAmount, id)
                 setEditData({
                     isEdit: false,
                     data: {}
                 })
             }} />
+            <DeleteDialog data={deleteAction?.data} open={deleteAction?.isDeleteModalOpen} onDelete={(id) => {
+                deleteHandler(id)
+                setDeleteAction({
+                    isDeleteModalOpen: false,
+                    data: {}
+                })
+            }} onClose={() => setDeleteAction({
+                isDeleteModalOpen: false,
+                data: {}
+            })} />
         </>
     )
 }
