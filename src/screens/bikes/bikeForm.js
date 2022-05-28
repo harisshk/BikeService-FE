@@ -176,10 +176,10 @@ export const BikeForm = (props) => {
                             />
 
                             <Box sx={{ mt: 3 }} style={{ display: "flex", justifyContent: "end" }}>
-                                <Button type="reset" color="error" >
+                                <Button disabled={isLoading} type="reset" color="error" >
                                     Reset
                                 </Button> &nbsp;
-                                <Button type="submit" variant="contained" >
+                                <Button disabled={isLoading} type="submit" variant="contained" >
                                     {!isEdit ? 'Create' : 'Update'}
                                 </Button>
                             </Box>

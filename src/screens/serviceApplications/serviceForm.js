@@ -63,6 +63,7 @@ export const CreateService = (props) => {
                     });
                     setSnackbarOpen(true);
                     setTimeout(() => {
+                        setIsLoading(false)
                         navigate('/services/all', { replace: true });
                     }, 2000);
                 } else {
@@ -71,6 +72,7 @@ export const CreateService = (props) => {
                         variant: "error",
                     });
                     setSnackbarOpen(true);
+                    setIsLoading(false)
                 }
             } else {
                 setSnackbarInfo({
@@ -78,8 +80,9 @@ export const CreateService = (props) => {
                     variant: "warning",
                 });
                 setSnackbarOpen(true);
+                setIsLoading(false)
             }
-            setIsLoading(false)
+
         }
     });
     const { errors, touched, handleSubmit, getFieldProps, setFieldValue, values } = formik;
@@ -146,10 +149,10 @@ export const CreateService = (props) => {
                                 <Typography variant="h5">Estimated Amount : {values?.estimatedAmount} </Typography>
                             </FormControl>
                             <Box sx={{ mt: 3 }} style={{ display: "flex", justifyContent: "end" }}>
-                                <Button type="reset" color="error" >
+                                <Button disabled={isLoading} type="reset" color="error" >
                                     Reset
                                 </Button> &nbsp;
-                                <Button type="submit" variant="contained" >
+                                <Button disabled={isLoading} type="submit" variant="contained" >
                                     Create
                                 </Button>
                             </Box>
