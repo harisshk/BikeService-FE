@@ -4,7 +4,7 @@ import { bikeServiceUrl } from '../constants/url'
 
 export const getUserBikes = async (userId) => {
     try {
-        const response = await axios.get(`${bikeServiceUrl}/owner/${userId}`)
+        const response = await axios.get(`${bikeServiceUrl}/owner/${userId}/${localStorage.getItem('id')}`)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -17,7 +17,7 @@ export const getUserBikes = async (userId) => {
 };
 export const getBikeById = async (bikeId) => {
     try {
-        const response = await axios.get(`${bikeServiceUrl}/${bikeId}`)
+        const response = await axios.get(`${bikeServiceUrl}/${bikeId}/${localStorage.getItem('id')}`)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -31,7 +31,7 @@ export const getBikeById = async (bikeId) => {
 
 export const editBikeData = async (bikeId, payload) => {
     try {
-        const response = await axios.put(`${bikeServiceUrl}/edit/${bikeId}`, payload)
+        const response = await axios.put(`${bikeServiceUrl}/edit/${bikeId}/${localStorage.getItem('id')}`, payload)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -45,7 +45,7 @@ export const editBikeData = async (bikeId, payload) => {
 
 export const createBike = async (payload) => {
     try {
-        const response = await axios.post(`${bikeServiceUrl}/create`, payload)
+        const response = await axios.post(`${bikeServiceUrl}/create/${localStorage.getItem('id')}`, payload)
         console.log(response)
         if (response.data.success) {
             return {

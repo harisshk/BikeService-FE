@@ -20,10 +20,12 @@ import { useDispatch } from 'react-redux';
 import { setProfile } from '../../redux/action/profile'
 // ----------------------------------------------------------------------
 import { login } from '../../services/authService';
+import Loader from '../Loader';
 export function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false)
   const [snackbarInfo, setSnackbarInfo] = useState({
@@ -44,12 +46,17 @@ export function LoginForm() {
     validationSchema: LoginSchema,
     onSubmit: async (data) => {
       const { email, password } = data
+      setIsLoading(true)
       const loginResponse = await login(email, password)
       if (loginResponse.success) {
         dispatch(setProfile(loginResponse));
-        navigate('/home', { replace: true });
+        setTimeout(() => {
+          setIsLoading(false)
+          navigate('/home', { replace: true });
+        }, 2000);
       }
       else {
+        setIsLoading(false)
         if (loginResponse.message === "Mismatch email / password") {
           setSnackbarInfo({
             message: "Credentials error",
@@ -146,6 +153,7 @@ export function LoginForm() {
         variant={snackbarInfo.variant}
         handleClose={() => setSnackbarOpen(false)}
       />
+      <Loader open={isLoading} />
     </>
   );
 }

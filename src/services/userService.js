@@ -3,7 +3,7 @@ import { userServiceUrl } from '../constants/url'
 
 export const getDashboardCustomer = async (userId) => {
     try {
-        const response = await axios.get(`${userServiceUrl}/customer/dashboard/${userId}`)
+        const response = await axios.get(`${userServiceUrl}/customer/dashboard/${userId}/${userId}`)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -17,7 +17,7 @@ export const getDashboardCustomer = async (userId) => {
 
 export const getDashboardOwner = async () => {
     try {
-        const response = await axios.get(`${userServiceUrl}/owner/dashboard`)
+        const response = await axios.get(`${userServiceUrl}/owner/dashboard/${localStorage.getItem('id')}`)
         if (response.data.success) {
             return {
                 ...response?.data

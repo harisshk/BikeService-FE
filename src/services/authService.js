@@ -22,9 +22,9 @@ export const login = async (email, password) => {
         );
         const { jwtToken, name, role, _id, avatar, } = loginResponse?.data?.user
         if (!loginResponse.data.error) {
-            // localStorage.setItem("token", loginResponse.data.user.jwtToken);
-            // localStorage.setItem("role", loginResponse.data.user.role)
-            // localStorage.setItem("id", loginResponse.data.user._id)
+            localStorage.setItem("id", _id)
+            console.log(jwtToken)
+            localStorage.setItem("token", jwtToken)
             return {
                 success: true,
                 token: jwtToken,

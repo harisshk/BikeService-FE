@@ -1,9 +1,10 @@
 import axios from "axios";
 import { servicesServiceUrl } from '../constants/url'
 
+
 export const getUserServices = async (userId) => {
     try {
-        const response = await axios.get(`${servicesServiceUrl}/owner/${userId}`)
+        const response = await axios.get(`${servicesServiceUrl}/owner/${userId}/${localStorage.getItem('id')}`)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -17,7 +18,7 @@ export const getUserServices = async (userId) => {
 
 export const getAllServices = async () => {
     try {
-        const response = await axios.get(`${servicesServiceUrl}/all`)
+        const response = await axios.get(`${servicesServiceUrl}/all/${localStorage.getItem('id')}`)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -31,7 +32,7 @@ export const getAllServices = async () => {
 
 export const bookService = async (payload) => {
     try {
-        const response = await axios.post(`${servicesServiceUrl}/create`, payload)
+        const response = await axios.post(`${servicesServiceUrl}/create/${localStorage.getItem('id')}`, payload)
         if (response.data.success) {
             return {
                 ...response?.data
@@ -46,7 +47,7 @@ export const bookService = async (payload) => {
 export const updateService = async (payload, id) => {
     console.log("UPDATE", payload, id)
     try {
-        const response = await axios.put(`${servicesServiceUrl}/edit/${id}`, payload)
+        const response = await axios.put(`${servicesServiceUrl}/edit/${id}/${localStorage.getItem('id')}`, payload)
         if (response.data.success) {
             return {
                 ...response?.data
